@@ -1,7 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface ErrorData {
-  errorMessage: string;
+    errorMessage: string;
 }
 
 // const handleLogout = () => {
@@ -10,42 +10,38 @@ interface ErrorData {
 //     window.location.reload();
 // };
 
-export const baseQueryWithReauth = async (
-  args: any,
-  api: any,
-  extraOptions: any = {},
-) => {
-  const baseUrl = "https://silky-wakeful-fifth.glitch.me";
-  const dynamicBaseQuery = fetchBaseQuery({
-    baseUrl,
-    prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json");
-      return headers;
-    },
-  });
+export const baseQueryWithReauth = async (args: any, api: any, extraOptions: any = {}) => {
+    const baseUrl = "https://silky-wakeful-fifth.glitch.me";
+    const dynamicBaseQuery = fetchBaseQuery({
+        baseUrl,
+        prepareHeaders: (headers) => {
+            headers.set("Content-Type", "application/json");
+            return headers;
+        },
+    });
 
-  const result = await dynamicBaseQuery(args, api, extraOptions);
-  console.log("API call result:", result);
+    const result = await dynamicBaseQuery(args, api, extraOptions);
+    console.log("API call result:", result);
 
-  const { error } = result;
-  if (error) {
-    const { status } = error as { status: number | string; data: ErrorData };
+    const { error } = result;
+    if (error) {
+        const { status } = error as { status: number | string; data: ErrorData };
 
-    switch (status) {
-      case "FETCH_ERROR":
-        console.error("FETCH_ERROR occurred:", error);
-        //handleLogout();
-        break;
-      case 409:
-        // toastMessage(data?.errorMessage, "ERROR", "Error");
-        break;
-      default:
-        console.error("Unexpected error:", error);
-        break;
+        switch (status) {
+            case "FETCH_ERROR":
+                console.error("FETCH_ERROR occurred:", error);
+                //handleLogout();
+                break;
+            case 409:
+                // toastMessage(data?.errorMessage, "ERROR", "Error");
+                break;
+            default:
+                console.error("Unexpected error:", error);
+                break;
+        }
+
+        throw error.data;
     }
 
-    throw error.data;
-  }
-
-  return result;
+    return result;
 };
