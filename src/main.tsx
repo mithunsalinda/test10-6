@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { ConfigProvider, App as AntdApp } from "antd";
 import "antd/dist/reset.css";
 import "./index.css";
+import "./App.css";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
